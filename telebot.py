@@ -24,3 +24,4 @@ def main() -> None:
 dispatcher = updater.dispatcher
  dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
+python bot.py
