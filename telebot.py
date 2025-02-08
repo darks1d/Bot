@@ -1,20 +1,47 @@
-import telebot 
-import parser
-TOKEN = "7709523457:AAGdkIBWgJd0ZQXI9Q_5QZElVDllElTiE_4"
-bot = telebot.TeleBot
-@bot.message_handler(commandes=['start', 'go'])
-def start_handler(massage):
-        bot.send_message(message.chat.id,'Приве я который выдает загатки')
-bot.polling()
-@bot.messange_handler(content_types=['text])
-def text_handler(message):
- text = message.text.lower()
- chad_id = message.chat.id
- if text == "привет":
-  bot.send_message(chad_id,)
- elfi text == ""
-  bot.send_message(chad_id'')
- else:
-  bot.send_message(chad_id'')
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+import random
+
+# Список загадок и ответов
+riddles = [
+    {"question": "Что можно увидеть с закрытыми глазами?", "answer": "сон"},
+    {"question": "Что идет, не двигаясь с места?", "answer": "часы"},
+    {"question": "Чем больше из нее берешь, тем больше она становится. Что это?", "answer": "яма"},
+    {"question": "Висит груша — нельзя скушать. Что это?", "answer": "лампочка"},
+    {"question": "Что принадлежит вам, но другие используют это чаще, чем вы?", "answer": "имя"},
+]
+
+def start(update: Update, context: CallbackContext):
+    update.message.reply_text("Привет! Я бот-загадочник. Напиши /riddle, чтобы получить загадку.")
+
+def riddle(update: Update, context: CallbackContext):
+    riddle_data = random.choice(riddles)
+    question = riddle_data["question"]
+    context.user_data["current_answer"] = riddle_data["answer"] 
+    update.message.reply_text(f"Загадка: {question}")
+
+def handle_message(update: Update, context: CallbackContext):
+    user_answer = update.message.text.lower()
+    correct_answer = context.user_data.get("current_answer", "")
+
+    if user_answer == correct_answer:
+        update.message.reply_text("Правильно! Молодец! 🎉 Напиши /riddle для новой загадки.")
+    else:
+        update.message.reply_text("Неверно. Попробуй еще раз!")
+
+def main():
+    TOKEN = "7709523457:AAGdkIBWgJd0ZQXI9Q_5QZElVDllElTiE_4"
+
+    updater = Updater(TOKEN)
+    dispatcher = updater.dispatcher
+
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("riddle", riddle))
+        
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
 
 
