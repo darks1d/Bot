@@ -27,4 +27,5 @@ riddle_bot.py
    git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
 cd <НАЗВАНИЕ_РЕПОЗИТОРИЯ>
 
-   2. Создать файл riddle_bot.py
+   2. Создать файл
+       riddle_bot.py
